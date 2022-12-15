@@ -1,15 +1,4 @@
-library(tidyverse)
-library(DT)
-library(shiny)
-library(httr2)
-library(ggplot2)
-library(lubridate)
-library(dplyr)
-library(leaflet)
-library(sf)
-library(usethis)
-
-#' @exportMethod 
+#' @export
 get_token <- function(username, password){
 
   try(
