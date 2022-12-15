@@ -9,6 +9,7 @@ library(leaflet)
 library(sf)
 library(usethis)
 
+#' @export
 get_token <- function(username, password){
 
   try(
@@ -23,6 +24,7 @@ get_token <- function(username, password){
   token
 }
 
+#' @export
 get_collections <- function(token=NULL){
 
   if(is.null(token)) stop('You need to include your token from get_token()')
@@ -43,6 +45,7 @@ get_collections <- function(token=NULL){
 
 collection <- get_collections(token)
 
+#' @export
 get_collection_items <- function(collection_id, token){
 
 
@@ -66,6 +69,7 @@ get_collection_items <- function(collection_id, token){
   res
 }
 
+#' @export
 get_data <- function(card_id, token){
   try(
     request(paste0("https://metabase-0dff19-tools-tools.apps.silver.devops.gov.bc.ca/api/card/", card_id, "/query/json")) %>%
