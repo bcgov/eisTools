@@ -5,24 +5,37 @@
 #'
 #' @return A string to be passed as an argument to functions requiring it
 #' @importFrom magrittr %>%
-#' @importFrom httr2 request
-#' @importFrom httr2 req_headers
-#' @importFrom httr2 req_body_json
-#' @importFrom httr2 req_perform
-#' @importFrom httr2 resp_body_json
+#' @importFrom httr2 request req_headers req_body_json req_perform resp_body_json
 #' @export
+#' 
 get_token <- function(username, password){
-
-  try(
-    token <- request("https://metabase-0dff19-tools-tools.apps.silver.devops.gov.bc.ca/api/session") %>%
-      req_body_json(list('username' = username, 'password' = password)) %>%
-      req_headers("Content-Type" = "application/json", 'Accept' = "application/json") %>%
+  
+  req <- tryCatch({
+      request("https://metabase-0dff19-tools-tools.apps.silver.devops.gov.bc.ca/api/session")
+    }, error = function(){
+      stop('Failed to build the request because the `request()` call failed.')
+    }
+  )
+  
+  req_exp <- req %>%
+    req_body_json(list('username' = toString(username), 
+                       'password' = toString(password))) %>%
+    req_headers("Content-Type" = "application/json", 
+                'Accept' = "application/json")}
+  
+  token <- tryCatch({
+    req_exp %>%
       req_perform() %>%
       resp_body_json() %>%
       unlist()
-  )
+    }, error = function(){
+      stop('The API call to Metabase failed.')
+    })
 
-  token
+  if(!is.null(token)){
+    token
+  } else {
+      'Failed to generate token.'}
 }
 
 #' Get all collections that the user has access to
@@ -31,12 +44,8 @@ get_token <- function(username, password){
 #'
 #' @return A dataframe containing information about the collections that the user has access to
 #' @importFrom magrittr %>%
-#' @importFrom httr2 request
-#' @importFrom httr2 req_headers
-#' @importFrom httr2 req_perform
-#' @importFrom httr2 resp_body_json
-#' @importFrom dplyr select
-#' @importFrom dplyr rename
+#' @importFrom httr2 request req_headers req_perform resp_body_json
+#' @importFrom dplyr rename select
 #' @export
 get_collections <- function(token=NULL){
 
@@ -63,10 +72,7 @@ get_collections <- function(token=NULL){
 #' 
 #' @return A dataframe containing information about the items with a specific collection
 #' @importFrom magrittr %>%
-#' @importFrom httr2 request
-#' @importFrom httr2 req_headers
-#' @importFrom httr2 req_perform
-#' @importFrom httr2 resp_body_json
+#' @importFrom httr2 request req_headers req_perform resp_body_json
 #' @importFrom dplyr rename
 #' @export
 get_collection_items <- function(collection_id, token){
@@ -99,10 +105,7 @@ get_collection_items <- function(collection_id, token){
 #' 
 #' @return A dataframe containing information about the items with a specific collection
 #' @importFrom magrittr %>%
-#' @importFrom httr2 request
-#' @importFrom httr2 req_headers
-#' @importFrom httr2 req_perform
-#' @importFrom httr2 resp_body_json
+#' @importFrom httr2 request req_headers req_perform resp_body_json
 #' @export
 get_data <- function(item_id, token){
   try(
