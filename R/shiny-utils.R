@@ -21,7 +21,7 @@ get_token <- function(username, password){
     req_body_json(list('username' = toString(username), 
                        'password' = toString(password))) %>%
     req_headers("Content-Type" = "application/json", 
-                'Accept' = "application/json")}
+                'Accept' = "application/json")
   
   token <- tryCatch({
     req_exp %>%
@@ -31,10 +31,10 @@ get_token <- function(username, password){
     }, error = function(){
       stop('The API call to Metabase failed.')
     })
-
+  
   if(!is.null(token)){
     token
-  } stop('Failed to generate token.')
+  } else {'Failed to generate token.'}
 }
 
 #' Get all collections that the user has access to
