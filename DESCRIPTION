@@ -11,10 +11,11 @@ Encoding: UTF-8
 Imports:
   dplyr
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.0.0
+RoxygenNote: 7.2.0
 Suggests: 
     knitr,
     rmarkdown
 VignetteBuilder: knitr
 URL: https://github.com/bcgov/eisTools
 BugReports: https://github.com/bcgov/eisTools/issues
+
