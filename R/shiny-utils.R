@@ -32,8 +32,6 @@ get_collections <- function(token=NULL){
   collections
 }
 
-collection <- get_collections(token)
-
 #' @export
 get_collection_items <- function(collection_id, token){
 
