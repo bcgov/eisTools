@@ -5,8 +5,7 @@ Authors@R: c(
     person("First", "Last", , "first.last@example.com", role = c("aut", "cre")),
     person("Province of British Columbia", role = "cph")
   )
-Description: A collection of R functions to access, visualize, and analyze
-BC biodiversity data.
+Description: A collection of R functions to access, visualize, and analyze BC biodiversity data.
 License: Apache License (== 2.0) | file LICENSE
 Encoding: UTF-8
 Imports:
