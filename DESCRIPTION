@@ -2,7 +2,7 @@ Package: eisTools
 Title: R Functions For Working With BC Biodiversity Data
 Version: 0.0.0.9000
 Authors@R: c(
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre")),
+    person("Macgregor", "Aubertin-Young", , "macgregor.aubertin-young@gov.bc.ca", role = c("aut", "cre")),
     person("Province of British Columbia", role = "cph")
   )
 Description: A collection of R functions to access, visualize, and analyze BC biodiversity data.
