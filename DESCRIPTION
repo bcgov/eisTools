@@ -18,4 +18,3 @@ Suggests:
 VignetteBuilder: knitr
 URL: https://github.com/bcgov/eisTools
 BugReports: https://github.com/bcgov/eisTools/issues
-
