@@ -1,25 +1,29 @@
-bcmaps::available_layers() %>% as.data.frame()
-
-# Geometries of BC provincial boundaries
+#' Get geometry object of the provincial boundaries of British Columbia
+#' 
+#' @param res Whether the spatial resolution should be 'high' or 'low'
+#'
+#' @return A geometry object of the British Columbia provincial boundaries
+#' @importFrom bcmaps bc_bound
+#' @importFrom bcmaps bc_bound_hres
+#' @export
 bc_bounds <- function(res='low'){
-  if(res == 'low'){bcmaps::bc_bound()} else {bc_bound_hres()}
+  if(res == 'low'){bc_bound()} else {bc_bound_hres()}
 }
 
-# Geometries of BC Biogeoclimatic Zones
+#' Get geometry object of the biogeoclimatic zones of British Columbia
+#' 
+#' @return A geometry object of the British Columbia biogeoclimatic zones
+#' @importFrom bcmaps bec
+#' @export
 bc_bec <- function(){
   bcmaps::bec()
 }
 
-# Geometries of BC Ecoprovinces
-bc_ecoprovinces <- function(){
-  bcmaps::ecoprovinces()
-}
-
-# Geometries of BC Ecosections
-bc_ecosections <- function(){
-  bcmaps::ecosections()
-}
-
+#' Get geometry object of the natural resource regions of British Columbia
+#' 
+#' @return A geometry object of the British Columbia natural resource zones
+#' @importFrom bcmaps bec
+#' @export
 bc_admin_regions <- function(){
   regions <- bcmaps::nr_regions()
   reg <- regions %>% dplyr::select(REGION_NAME, geometry)
@@ -27,13 +31,10 @@ bc_admin_regions <- function(){
   reg
 }
 
-bc_admin_regions()
-
-bcdata::bcdc_list() %>% as.data.frame()
-
-bcdata::bcdc_get_data('bc-parks-api')
-
-bcdc_search()
-
-# SPI species observations
-bcdata::bcdc_get_data('1733feb0-9e33-4228-8078-d0f0e4df568e')
+#' Get species observations from the Species Inventory database
+#' 
+#' @importFrom bcdata bcdc_get_data
+#' @export
+get_spi_obs <- function(){
+  bcdata::bcdc_get_data('1733feb0-9e33-4228-8078-d0f0e4df568e')
+}
