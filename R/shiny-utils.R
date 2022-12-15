@@ -34,9 +34,7 @@ get_token <- function(username, password){
 
   if(!is.null(token)){
     token
-  } else {
-      'Failed to generate token.'
-  })
+  } stop('Failed to generate token.')
 }
 
 #' Get all collections that the user has access to
