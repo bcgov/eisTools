@@ -9,7 +9,7 @@ library(leaflet)
 library(sf)
 library(usethis)
 
-#' @export
+#' @exportMethod 
 get_token <- function(username, password){
 
   try(
