@@ -22,10 +22,9 @@ bc_bounds <- function(res='low'){
 #' @return A geometry object of the British Columbia biogeoclimatic zones
 #' @importFrom bcmaps bec
 #' @export
-NULL
-# bc_bec <- function(){
-#   bcmaps::bec()
-# }
+bc_bec <- function(){
+  bcmaps::bec()
+}
 
 #' Get geometry object of the natural resource regions of British Columbia
 #' 
