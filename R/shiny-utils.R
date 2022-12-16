@@ -63,8 +63,9 @@ get_collections <- function(token=NULL){
   
   resp_tmp <- tryCatch({
     req_perform()
-  }, error = auth_error()
-  )
+  }, error = function(err){
+    err$message <- stop('Request not authorized. Please check that your username and password are correct.', err)
+  })
   
   resp <- resp_tmp %>%
     resp_body_json() %>%
@@ -105,7 +106,9 @@ get_collection_items <- function(collection_id, token){
   resp_tmp <- tryCatch({
     req %>%
       req_perform()
-  }, error = auth_error())
+  }, error = function(err){
+    err$message <- stop('Request not authorized. Please check that your username and password are correct.', err)
+  })
 
   resp <- tryCatch({
     resp_tmp %>%
@@ -143,7 +146,9 @@ get_data <- function(item_id, token){
   resp <- tryCatch({
     req %>%
       req_perform()
-  }, error = auth_error())
+  }, error = function(err){
+    err$message <- stop('Request not authorized. Please check that your username and password are correct.', err)
+  })
   
   resp <- resp %>% 
     resp_body_json() %>%
