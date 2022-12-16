@@ -7,13 +7,15 @@
 #' @importFrom magrittr %>%
 #' @importFrom httr2 request req_headers req_body_json req_perform resp_body_json
 #' @export
-#' 
 get_token <- function(username, password){
+  
+  if(!is.character(username)) stop('Your username must be a character')
+  if(!is.character(password)) stop('Your password must be a character')
   
   req <- tryCatch({
       request("https://metabase-0dff19-tools-tools.apps.silver.devops.gov.bc.ca/api/session")
-    }, error = function(){
-      stop('Failed to build the request because the `request()` call failed.')
+    }, error = function(err){
+      err$message <- stop('Failed to build the API request: ', err)
     }
   )
   
@@ -23,18 +25,18 @@ get_token <- function(username, password){
     req_headers("Content-Type" = "application/json", 
                 'Accept' = "application/json")
   
-  token <- tryCatch({
+  token_tmp <- tryCatch({
     req_exp %>%
-      req_perform() %>%
-      resp_body_json() %>%
-      unlist()
-    }, error = function(){
-      stop('The API call to Metabase failed.')
-    })
+      req_perform()
+    }, error = auth_error())
+  
+  token <- token_tmp  %>%
+    resp_body_json() %>%
+    unlist()
   
   if(!is.null(token)){
     token
-  } else {'Failed to generate token.'}
+  } else {stop('Failed to generate token')}
 }
 
 #' Get all collections that the user has access to
@@ -48,20 +50,28 @@ get_token <- function(username, password){
 #' @export
 get_collections <- function(token=NULL){
 
-  if(is.null(token)) stop('You need to include your token from get_token()')
+  if(is.null(token)) stop('You need to include your access token from `get_token()`')
 
-  try(
+  req <- tryCatch({
     collections <- request(paste0("https://metabase-0dff19-tools-tools.apps.silver.devops.gov.bc.ca/api/collection/")) %>%
-      req_headers("X-Metabase-Session" = token) %>%
-      req_perform() %>%
-      resp_body_json() %>%
-      do.call(rbind, .) %>%
-      as.data.frame() %>%
-      dplyr::select(name, id, description) %>%
-      rename(collection_id = id)
+      req_headers("X-Metabase-Session" = token)
+  }, error = function(err){
+    err$message <- stop('Failed to build the API request: ', err)
+  })
+  
+  resp_tmp <- tryCatch({
+    req_perform()
+  }, error = auth_error()
   )
+  
+  resp <- resp_tmp %>%
+    resp_body_json() %>%
+    do.call(rbind, .) %>%
+    as.data.frame() %>%
+    dplyr::select(name, id, description) %>%
+    rename(collection_id = id)
 
-  collections
+  if(!is.null(resp)){resp} else{stop('Failed to get collections')}
 }
 
 #' Get all items within a specific collection that the user has access to
@@ -75,26 +85,36 @@ get_collections <- function(token=NULL){
 #' @importFrom dplyr rename
 #' @export
 get_collection_items <- function(collection_id, token){
-
+  
+  if(is.null(token)) stop('You need to include your access token from `get_token()`')
 
   if(!all.equal(collection_id, as.integer(collection_id))){
-    stop("You must provide a collection_id as an integer. Use get_collections()
+    stop("You must provide a collection_id as an integer. Use `get_collections()`
     to find collections that you have access to.")
   }
+  
+  req <- tryCatch({
+    request(paste0("https://metabase-0dff19-tools-tools.apps.silver.devops.gov.bc.ca/api/collection/", collection_id, "/items")) %>%
+      req_headers("X-Metabase-Session" = token)
+    }, error = function(err){
+      err$message <- stop('Failed to build the API request: ', err)
+  })
+  
+  resp_tmp <- tryCatch({
+    req %>%
+      req_perform()
+  }, error = auth_error())
 
-  try(
-    data <- request(paste0("https://metabase-0dff19-tools-tools.apps.silver.devops.gov.bc.ca/api/collection/", collection_id, "/items")) %>%
-      req_headers("X-Metabase-Session" = token) %>%
-      req_perform() %>%
-      resp_body_json()
-  )
+  resp <- tryCatch({
+    resp_tmp %>%
+      resp_body_json() %>%
+      lapply(.$data, , function(x) x[c('id', 'name', 'description')]) %>%
+      do.call(rbind, .) %>%
+      as.data.frame() %>%
+      rename(item_id = id)
+  })
 
-  res <- lapply(data$data, function(x) x[c('id', 'name', 'description')]) %>%
-    do.call(rbind, .) %>%
-    as.data.frame() %>%
-    rename(item_id = id)
-
-  res
+  if(!is.null(resp)){resp} else{stop('Failed to get collection items')}
 }
 
 #' Get all items within a specific collection that the user has access to
@@ -107,14 +127,27 @@ get_collection_items <- function(collection_id, token){
 #' @importFrom httr2 request req_headers req_perform resp_body_json
 #' @export
 get_data <- function(item_id, token){
-  try(
+  
+  if(is.null(token)) stop('You need to include your access token from `get_token()`')
+  
+  req <- tryCatch({
     request(paste0("https://metabase-0dff19-tools-tools.apps.silver.devops.gov.bc.ca/api/card/", item_id, "/query/json")) %>%
       req_headers("X-Metabase-Session" = token) %>%
-      req_method("POST") %>%
-      req_perform() %>%
-      resp_body_json() %>%
-      do.call(rbind, .) %>%
-      as.data.frame()
-  )
+      req_method("POST")
+  }, error = function(err){
+    err$message <- stop('Failed to build the API request: ', err)
+  })
+    
+  resp <- tryCatch({
+    req %>%
+      req_perform()
+  }, error = auth_error())
+  
+  resp <- resp %>% 
+    resp_body_json() %>%
+    do.call(rbind, .) %>%
+    as.data.frame()
+  
+  if(!is.null(resp)){resp} else{stop('Failed to get the requested data')}
 }
 
