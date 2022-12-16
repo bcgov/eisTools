@@ -28,9 +28,11 @@ get_token <- function(username, password){
   token_tmp <- tryCatch({
     req_exp %>%
       req_perform()
-    }, error = auth_error())
+    }, error = function(err){
+      err$message <- stop('Request not authorized. Please check that your username and password are correct.', err)
+    })
   
-  token <- token_tmp  %>%
+  token <- token_tmp %>%
     resp_body_json() %>%
     unlist()
   
