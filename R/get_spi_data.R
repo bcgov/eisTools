@@ -45,6 +45,8 @@ get_species_obs <- function(species=NULL, start_date=NULL, end_date=NULL, crs=30
   resp
 }
 
+get_species_obs('Caribou')
+
 #' Get telemetry records from the Species Inventory database through the BC Data Catalogue
 #' 
 #' @description A wrapper around `bcdata::bcdata_get_data()` to retrieve all non-secure telemetry records from the Species Inventory database through the BC Data Catalogue

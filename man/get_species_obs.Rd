@@ -4,7 +4,7 @@
 \alias{get_species_obs}
 \title{Get observations from the Species Inventory database through the BC Data Catalogue}
 \usage{
-get_species_obs(species, start_date = NULL, end_date = NULL, crs = 3005)
+get_species_obs(species = NULL, start_date = NULL, end_date = NULL, crs = 3005)
 }
 \arguments{
 \item{species}{The English name of a species to filter the results by}
