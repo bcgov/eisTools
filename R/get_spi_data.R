@@ -7,15 +7,15 @@
 #' @param end_date The maximum date to filter the results by. Returns records before this date.
 #' @param crs The coordinate reference system that the results should be returned in. Defauls to EPSG:3005 BC Albers.
 #' 
-#' @importFrom bcdata bcdc_get_data
+#' @importFrom bcdata bcdc_query_geodata
 #' @importFrom magrittr %>%
 #' @importFrom dplyr filter
 #' @export
 #' 
-get_species_obs <- function(species, start_date=NULL, end_date=NULL, crs=3005){
+get_species_obs <- function(species=NULL, start_date=NULL, end_date=NULL, crs=3005){
   
   d <- tryCatch({
-    bcdc_query_geodata('1733feb0-9e33-4228-8078-d0f0e4df568e', crs=crs)
+    bcdata::bcdc_query_geodata('1733feb0-9e33-4228-8078-d0f0e4df568e', crs=crs)
   }, error = function(err){
     err$message <- stop('Failed to build the query statement')
   })
@@ -54,7 +54,7 @@ get_species_obs <- function(species, start_date=NULL, end_date=NULL, crs=3005){
 #' @param end_date The maximum date to filter the results by. Returns records before this date.
 #' @param crs The coordinate reference system that the results should be returned in. Defauls to EPSG:3005 BC Albers.
 #' 
-#' @importFrom bcdata bcdc_get_data
+#' @importFrom bcdata bcdc_query_geodata
 #' @importFrom magrittr %>%
 #' @importFrom dplyr filter
 #' @export
@@ -100,7 +100,7 @@ get_telemetry <- function(species=NULL, start_date=NULL, end_date=NULL, crs=3005
 #' @param region The natural resource region to filter the results by
 #' @param crs The coordinate reference system that the results should be returned in. Defauls to EPSG:3005 BC Albers.
 #' 
-#' @importFrom bcdata bcdc_get_data
+#' @importFrom bcdata bcdc_query_geodata
 #' @importFrom dplyr filter
 #' @importFrom magrittr %>%
 #' @export
