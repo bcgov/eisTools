@@ -1,40 +1,24 @@
----
-output:
-  md_document:
-    variant: markdown_github
----
-
-```{r, echo = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.path = "README-"
-)
-```
-
 <!-- Add a project state badge
 See https://github.com/BCDevExchange/Our-Project-Docs/blob/master/discussion/projectstates.md
 If you have bcgovr installed and you use RStudio, click the 'Insert BCDevex Badge' Addin. -->
+[![Lifecycle:Experimental](https://img.shields.io/badge/Lifecycle-Experimental-339999)](https://github.com/bcgov/repomountie/blob/master/doc/lifecycle-badges.md)
 
-# eisTools
+## eisTools
 
-Description of package
+A collection of R functions to access, visualize, and analyze BC biodiversity data.
 
-### Features
+## Accessible Data for Natural Resource Stewardship
 
-### Installation
+The Ecosystem Information Section strives to share fish and wildlife data with those who need it. The eisTools package allows for up-to-date biodiversity data to be easily loaded directly into R, removing the need to understand APIs or download multiple files before your analyses. The package also helps visualize and process biodiversity data.
 
-### Usage
+## Objectives
 
-#### Example
-
-This is a basic example which shows you how to solve a common problem:
-
-```{r example}
-## basic example code
-```
+• Make biodiversity data discoverable, accessible and usable for natural resource management
+• Help develop RShiny applications to track biodiversity metrics
 
 ### Project Status
+
+The project is early in development. The codeback will change frequently.
 
 ### Getting Help or Reporting an Issue
 
