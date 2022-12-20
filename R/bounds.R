@@ -6,8 +6,15 @@
 #' @importFrom bcmaps bc_bound
 #' @importFrom bcmaps bc_bound_hres
 #' @export
+#' 
 bc_bounds <- function(res='low'){
-  if(res == 'low'){bc_bound()} else {bc_bound_hres()}
+  r <- tolower(res)
+  if(!any(r == 'low', r == 'high')) stop('`Res` must be one of "high" or "low"')
+  
+  if(r == 'low'){
+    try(bcmaps::bc_bound())
+  } else {
+    try(bcmaps::bc_bound_hres())}
 }
 
 #' Get geometry object of the biogeoclimatic zones of British Columbia
@@ -25,16 +32,12 @@ bc_bec <- function(){
 #' @importFrom bcmaps bec
 #' @export
 bc_admin_regions <- function(){
-  regions <- bcmaps::nr_regions()
-  reg <- regions %>% dplyr::select(REGION_NAME, geometry)
+  
+  regions <- tryCatch({
+    bcmaps::nr_regions()
+  }, error = function(err){
+    err$message <- stop('Failed to retrieve natural resource regions')
+  })
 
-  reg
-}
-
-#' Get species observations from the Species Inventory database
-#' 
-#' @importFrom bcdata bcdc_get_data
-#' @export
-get_spi_obs <- function(){
-  bcdata::bcdc_get_data('1733feb0-9e33-4228-8078-d0f0e4df568e')
+  if(!is.null(regions)){regions}
 }
