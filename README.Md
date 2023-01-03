@@ -10,8 +10,10 @@ The Ecosystem Information Section strives to make fish and wildlife data easy to
 
 ## Objectives
 
-• Make biodiversity data discoverable, accessible and usable for natural resource management :bear:\n
-• Help develop RShiny applications to track biodiversity metrics :mag:\n
+• Make biodiversity data discoverable, accessible and usable for natural resource management :bear:
+
+• Help develop RShiny applications to track biodiversity metrics :mag:
+
 • Streamline workflows to make analytical processes more efficient :heavy_check_mark:
 
 ### Project Status
