@@ -87,7 +87,6 @@ get_collections <- function(token=NULL){
 #' @importFrom magrittr %>%
 #' @importFrom httr2 request req_headers req_perform resp_body_json
 #' @importFrom dplyr rename
-#' @importFrom base lapply
 #' @export
 get_collection_items <- function(collection_id, token){
 
